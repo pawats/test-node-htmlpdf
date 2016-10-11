@@ -11,20 +11,27 @@ app.use(express.static('view'));
 
 
 app.get('/htmlpdf', function(req, res){
+	var serverAddress = getHostAddress(req);
 	var input = html;
 	var filename = 'testfile.pdf'
-	var parsedInput = parseHtml(input)
+	var parsedInput = parseHtml(input, serverAddress);
+
 	res.setHeader('Content-disposition', 'attachment; filename=' + filename);
 	generate(parsedInput, res);
 
 });
 
 app.get('/parse', function(req, res){
+	var serverAddress = getHostAddress(req);
 	var input = html;
-	res.send(parseHtml(input))
+
+	res.send(parseHtml(input, serverAddress))
 });
 
-function parseHtml(input){
+function getHostAddress(req){
+	return req.protocol + '://' + req.get('host') + "/";
+}
+function parseHtml(input, serverAddress){
 	var $ = cheerio.load(input);
 
 	$('body').css({
@@ -50,6 +57,11 @@ function parseHtml(input){
 		$(this).css({
 			"border": "1px solid black"
 		})
+	})
+
+	$("*[src]").each(function(){
+		var newSrc = serverAddress + $(this).attr("src");
+		$(this).attr("src", newSrc);
 	})
 
 	return $.html();
@@ -78,7 +90,8 @@ function generate(html, res){
 			}
 		},
 		// Rendering options
-		"base": "/", // Base path that's used to load files (images, css, js) when they aren't referenced using a host
+		// "base": "/", // Base path that's used to load files (images, css, js) when they aren't referenced using a host
+		// "base": "file:///Users/pawatsupaongprapa/Desktop/test-pdf/view/", // Base path that's used to load files (images, css, js) when they aren't referenced using a host
 
 		// File options 
 		"type": "pdf",             // allowed file types: png, jpeg, pdf 
