@@ -1,4 +1,3 @@
-# test-node-htmlpdf
 
 ## Start
 `npm start`
