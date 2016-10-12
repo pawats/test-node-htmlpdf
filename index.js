@@ -31,38 +31,76 @@ app.get('/parse', function(req, res){
 function getHostAddress(req){
 	return req.protocol + '://' + req.get('host') + "/";
 }
+
 function parseHtml(input, serverAddress){
 	var $ = cheerio.load(input);
 
 	$('body').css({
-		"font-family": "monospace"
-		// "font-family": "serif"
-	})
+		// "font-family": "monospace"
+		"font-family": "serif"
+	});
 
 	$('table').css({
-		"width":"100%",
+		"width": "100%",
 		"display":"table",
 		// "table-layout":"fixed",
 		"border-collapse": "collapse"
 	});
 
-	$('table *').each(function(){
-		$(this).css({
-			"width":"initial",
-			"word-break": "break-word"
-		})
-	})
+	$('table td').css({
+		"padding":"2px",
+		"text-align": "center",
+		"vertical-align": "middle"
+	});
 
-	$('table, th, tr, td').each(function(){
-		$(this).css({
-			"border": "1px solid black"
-		})
-	})
+	$('table, th, tr, td').css({
+		"border": "1px solid black"
+	});
+
+	// var fullWidthColumnNames = ["CSLN", "Region", "Severity", "SR Id", "Incident ID", "Country", "Status", "MIC Number"];
+
+	// $('table').each(function(i, table){
+	// 	$(table).find('td').each(function(){
+	// 		Get th of this td
+	// 		var $th = $(table).find('th').eq($(this).index());
+
+	// 		if(fullWidthColumnNames.indexOf($th.text()) > -1){
+	// 			$(this).css({
+	// 				"width":"initial",
+	// 				"word-break": "normal"
+	// 			})
+	// 		}
+	// 		else{
+	// 			$(this).css({
+	// 				"width":"initial",
+	// 				"word-break": "break-word"
+	// 			})			
+	// 		}			
+	// 	})
+
+	// })
+
+	// $('table *').each(function(){
+	// 	var $th = $(this).closest('table').find('th').eq($(this).index());
+	// 	if(fullWidthColumnNames.indexOf($th.text()) > -1){
+	// 		$(this).css({
+	// 			"width":"initial",
+	// 			"word-break": "normal"
+	// 		})
+	// 	}
+	// 	else{
+	// 		$(this).css({
+	// 			"width":"initial",
+	// 			"word-break": "break-word"
+	// 		})			
+	// 	}
+	// });
+
 
 	$("*[src]").each(function(){
 		var newSrc = serverAddress + $(this).attr("src");
 		$(this).attr("src", newSrc);
-	})
+	});
 
 	return $.html();
 };
