@@ -57,28 +57,28 @@ function parseHtml(input, serverAddress){
 		"border": "1px solid black"
 	});
 
-	// var fullWidthColumnNames = ["CSLN", "Region", "Severity", "SR Id", "Incident ID", "Country", "Status", "MIC Number"];
+	var fullWidthColumnNames = ["CSLN", "Region", "Severity", "SR Id", "Incident ID", "Country", "Status", "MIC Number"];
 
-	// $('table').each(function(i, table){
-	// 	$(table).find('td').each(function(){
-	// 		Get th of this td
-	// 		var $th = $(table).find('th').eq($(this).index());
+	$('table').each(function(i, table){
+		$(table).find('td').each(function(){
+			// Get th of this td
+			var $th = $(table).find('th').eq($(this).index());
 
-	// 		if(fullWidthColumnNames.indexOf($th.text()) > -1){
-	// 			$(this).css({
-	// 				"width":"initial",
-	// 				"word-break": "normal"
-	// 			})
-	// 		}
-	// 		else{
-	// 			$(this).css({
-	// 				"width":"initial",
-	// 				"word-break": "break-word"
-	// 			})			
-	// 		}			
-	// 	})
+			if(fullWidthColumnNames.indexOf($th.text()) > -1){
+				$(this).css({
+					"width":"initial",
+					"word-break": "normal"
+				})
+			}
+			else{
+				$(this).css({
+					"width":"initial",
+					"word-break": "break-word"
+				})			
+			}			
+		})
 
-	// })
+	})
 
 	// $('table *').each(function(){
 	// 	var $th = $(this).closest('table').find('th').eq($(this).index());
